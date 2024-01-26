@@ -101,7 +101,6 @@ namespace Tic_Tak_Toe
     internal class GridClass
 
     {
-        //ArrayStore Tile = new ArrayStore();
         Array Tile = new Array();
         GameClass TileSelector = new GameClass();
 
@@ -113,7 +112,15 @@ namespace Tic_Tak_Toe
 
         }
        
-        public int[] Tiles = { 0,1,-1, 0,1,-1, 0,1,-1 };
+        private int[] boredIndex = new int[9]{ 0,0,0,0,0,0,0,0,0 };
+        public int[] BoredIndex 
+        {
+            
+            get { return boredIndex; }
+            set { BoredIndex = value; }
+        }
+
+         
 
         public void GridBuilder(int GridDisplasmentX, int GridDisplasmentY)
         {
@@ -143,22 +150,21 @@ namespace Tic_Tak_Toe
 
         public void GridBuilderLoop(int GridDisplasmentX, int GridDisplasmentY)
         {
-           
             
-            for (int TileIndex = 0; TileIndex < Tiles.Length; TileIndex++)
-            {
-                TileBuilder(0 + GridDisplasmentX, 0 + GridDisplasmentY, TileIndex);
-                TileBuilder(3 + GridDisplasmentX, 0 + GridDisplasmentY, TileIndex);
-                TileBuilder(6 + GridDisplasmentX, 0 + GridDisplasmentY, TileIndex);
-                TileBuilder(0 + GridDisplasmentX, 3 + GridDisplasmentY, TileIndex);
-                TileBuilder(3 + GridDisplasmentX, 3 + GridDisplasmentY, TileIndex);
-                TileBuilder(6 + GridDisplasmentX, 3 + GridDisplasmentY, TileIndex);
-                TileBuilder(0 + GridDisplasmentX, 6 + GridDisplasmentY, TileIndex);
-                TileBuilder(3 + GridDisplasmentX, 6 + GridDisplasmentY, TileIndex);
-                TileBuilder(6 + GridDisplasmentX, 6 + GridDisplasmentY, TileIndex);
+           // for (int Tile = 0; TileIndex < .Length; TileIndex++)
+            //{
+                TileBuilder(0 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[0]);
+                TileBuilder(3 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[1]);
+                TileBuilder(6 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[2]);
+                TileBuilder(0 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[3]);
+                TileBuilder(3 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[4]);
+                TileBuilder(6 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[5]);
+                TileBuilder(0 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[6]);
+                TileBuilder(3 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[7]);
+                TileBuilder(6 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[8]);
 
 
-            }
+            //}
         }
 
 
@@ -278,6 +284,35 @@ namespace Tic_Tak_Toe
         public int GetColumns() 
         { return Columns;}
     
+    }
+
+    internal class Render
+    {
+        PageClass Window;
+        GridClass Bored;
+        PlayerClass Player;
+
+        public Render(GridClass bored, PlayerClass player, PageClass window)
+        {
+            PageClass Window = window;
+            GridClass Bored = bored;
+            PlayerClass Player = player;
+
+        }
+
+        public void RenderScreen()
+        {
+            Console.Clear();
+            Window.PageBuilder();
+            Bored.GridBuilderLoop(56, 4);
+
+        }
+        public void RenderPlayer(int PlayerIndex, int[] PlayerLocation)
+        {
+            Player.Draw(PlayerIndex, PlayerLocation);
+        }
+
+
     }
 
 }
