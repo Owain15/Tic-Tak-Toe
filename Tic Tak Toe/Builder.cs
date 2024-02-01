@@ -21,22 +21,27 @@ namespace Tic_Tak_Toe
 
         public void PageBuilder()
         {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
 
             HeaderBuilder();
 
             BorderBuilder();
 
             FooterBuilder();
+
+            Console.ResetColor();
         }
 
 
         public void HeaderBuilder()
         {
+          
             ArrayStore HeaderRef = new ArrayStore();
             Array Header = new Array();
 
             Header.ArrayBuilder(HeaderRef.header());
             Header.DrawArray(50, 0);
+           
            
         }
         public int GetHeaderRows()
@@ -117,14 +122,16 @@ namespace Tic_Tak_Toe
         {
             
             get { return boredIndex; }
-            set { BoredIndex = value; }
+            set { boredIndex = value; }
         }
 
          
 
         public void GridBuilder(int GridDisplasmentX, int GridDisplasmentY)
         {
-            int TileIndex1 = 0;
+            GameClass Game = new GameClass();
+
+            int TileIndex1 = 0; 
             int TileIndex2 = 0;
             int TileIndex3 = 0;
 
@@ -148,21 +155,22 @@ namespace Tic_Tak_Toe
 
         }
 
-        public void GridBuilderLoop(int GridDisplasmentX, int GridDisplasmentY)
+        public void GridBuilderLoop(int GridDisplasmentX, int GridDisplasmentY,int[] GameBoredIndex)
         {
             
            // for (int Tile = 0; TileIndex < .Length; TileIndex++)
             //{
-                TileBuilder(0 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[0]);
-                TileBuilder(3 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[1]);
-                TileBuilder(6 + GridDisplasmentX, 0 + GridDisplasmentY, boredIndex[2]);
-                TileBuilder(0 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[3]);
-                TileBuilder(3 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[4]);
-                TileBuilder(6 + GridDisplasmentX, 3 + GridDisplasmentY, boredIndex[5]);
-                TileBuilder(0 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[6]);
-                TileBuilder(3 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[7]);
-                TileBuilder(6 + GridDisplasmentX, 6 + GridDisplasmentY, boredIndex[8]);
-
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                TileBuilder(0 + GridDisplasmentX, 0 + GridDisplasmentY, GameBoredIndex[0]);
+                TileBuilder(3 + GridDisplasmentX, 0 + GridDisplasmentY, GameBoredIndex[1]);
+                TileBuilder(6 + GridDisplasmentX, 0 + GridDisplasmentY, GameBoredIndex[2]);
+                TileBuilder(0 + GridDisplasmentX, 3 + GridDisplasmentY, GameBoredIndex[3]);
+                TileBuilder(3 + GridDisplasmentX, 3 + GridDisplasmentY, GameBoredIndex[4]);
+                TileBuilder(6 + GridDisplasmentX, 3 + GridDisplasmentY, GameBoredIndex[5]);
+                TileBuilder(0 + GridDisplasmentX, 6 + GridDisplasmentY, GameBoredIndex[6]);
+                TileBuilder(3 + GridDisplasmentX, 6 + GridDisplasmentY, GameBoredIndex[7]);
+                TileBuilder(6 + GridDisplasmentX, 6 + GridDisplasmentY, GameBoredIndex[8]);
+                Console.ResetColor();
 
             //}
         }
@@ -286,31 +294,75 @@ namespace Tic_Tak_Toe
     
     }
 
-    internal class Render
+    internal class RenderClass
     {
-        PageClass Window;
-        GridClass Bored;
-        PlayerClass Player;
+        PageClass Window = new PageClass();
+        GridClass Bored = new GridClass();
+        PlayerClass CurrentPlayer;
+        int[] GameBoredIndex;
+        Array GameOver = new Array();
+        ArrayStore WinScreen = new ArrayStore();
 
-        public Render(GridClass bored, PlayerClass player, PageClass window)
-        {
-            PageClass Window = window;
-            GridClass Bored = bored;
-            PlayerClass Player = player;
-
-        }
+        public RenderClass(PlayerClass player, int[] gameBordInedx)
+        { CurrentPlayer = player; GameBoredIndex = gameBordInedx; }
 
         public void RenderScreen()
         {
             Console.Clear();
             Window.PageBuilder();
-            Bored.GridBuilderLoop(56, 4);
+            Bored.GridBuilderLoop(56, 4, GameBoredIndex);
 
         }
-        public void RenderPlayer(int PlayerIndex, int[] PlayerLocation)
+        public void RenderPlayer(int[] PlayerLocationIndex,bool IsPositionFreeOnBored)
         {
-            Player.Draw(PlayerIndex, PlayerLocation);
+            if (IsPositionFreeOnBored == true) 
+            {
+                
+                CurrentPlayer.Draw(CurrentPlayer.PlayerIndex, PlayerLocationIndex);
+               
+            }
+            else 
+            {
+                
+                CurrentPlayer.DrawError(CurrentPlayer.PlayerIndex, PlayerLocationIndex);
+                
+            }
         }
+        public void RenderPlayerScores(int PlayerXScore, int PlayerOScore)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(57, 2);
+            Console.WriteLine(PlayerXScore);
+            Console.SetCursorPosition(67, 2);
+            Console.WriteLine(PlayerOScore);
+            Console.ResetColor();
+        }
+        public void RenderPlayerOWins()
+        {
+            
+            GameOver.ArrayBuilder(WinScreen.playerOWinScreen());
+            GameOver.DrawArray(56, 4);
+        }
+        public void RenderPlayerXWins()
+        {
+
+            GameOver.ArrayBuilder(WinScreen.playerXWinScreen());
+            GameOver.DrawArray(56, 4);
+
+        }
+        public void RenderItsADraw() 
+        {
+            GameOver.ArrayBuilder(WinScreen.ItsADrawScreen);
+            GameOver.DrawArray(56, 4);
+        }
+        public void RenderGameInstructions() 
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            GameOver.ArrayBuilder(WinScreen.gameInstructions());
+            GameOver.DrawArray(0,0);
+            Console.ResetColor();
+        }
+    
 
 
     }
