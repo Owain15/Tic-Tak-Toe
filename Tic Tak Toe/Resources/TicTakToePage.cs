@@ -4,35 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tic_Tak_Toe
+namespace Tic_Tak_Toe.Resources
 {
-    internal class ArrayStore
+    internal class TicTakToePage
     {
-        string[,] Empty =
-        {   { "#","-","#", },
-            { "|"," ","|", },
-            { "#","-","#", }
-        };
-        string[,] O =
-        {
-            { "#","-","#", },
-            { "|","0","|", },
-            { "#","-","#", }
-        };
-        string[,] X =
-        {   { "#","-","#", },
-            { "|","X","|", },
-            { "#","-","#", }
-        };
-        string[,] Header =
-        {
+        public string[,] Header =
+       {
            { "#","-","-","-","-","-","-","-","-","-","#","-","-","-","-","-","-","-","-","-","#" },
            { "|","P","l","a","y","e","r",".","X"," ","|","P","l","a","y","e","r",".","O"," ","|" },
            { "|","s","c","o","r","e"," "," "," "," ","|","s","c","o","r","e"," "," "," "," ","|" },
            { "#","-","-","-","-","-","-","-","-","-","#","-","-","-","-","-","-","-","-","-","#" }
-          
+
         };
-        string[,] Border =
+        public string[,] Border =
       {
             { "|"," "," "," "," "," ","#","-","-","-","-","-","-","-","#"," "," "," "," "," ","|" },
             { "|"," "," "," "," "," ","|"," "," "," "," "," "," "," ","|"," "," "," "," "," ","|" },
@@ -51,6 +35,7 @@ namespace Tic_Tak_Toe
             { "|"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","|" },
             { "#","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","#" }
         };
+
         public string[,] OWinsScreen =
         {
             {"#","-","-","-","-","-","-","-","#" },
@@ -87,63 +72,19 @@ namespace Tic_Tak_Toe
             {"|"," "," "," "," "," "," "," ","|" },
             {"#","-","-","-","-","-","-","-","#" }
         };
-        string[,] Grid =
-        {
-            { "0","0","0" },
-            { "0","0","0" },
-            { "0","0","0" }
-        };
 
-        string[,] GameInstructions =
-        {
+        public string[,] GameInstructions =
+             {
             {" Tic Tak Toe Instructions." },
             {""},
             { "Use The Arrow Keys To Move Your Marker." },
             {" Press Enter To Place A Move." },
             {" Get Three In A Row To Win The Round." },
-            {" Press The Escape Key To Reset The Scores." }
-        
+            {""},
+            {" Press BackSpace To Reset The Scores." },
+            {"Or Escape To EndThe Game." }
+
         };
-
-        
-        public string[,] TileEmpty()
-        {
-
-            return Empty;
-
-        }
-        public string[,] TileX()
-        {
-
-            return X;
-  
-
-        }
-        public string[,] TileO()
-        {
-
-            return O;
-      
-
-        }
-        public string[,] grid()
-        {
-            return Grid;
-        }
-        public string[,] header()
-        { return Header;}
-        public string[,] border()
-        { return Border; }
-        public string[,] footer() 
-        { return Footer;}
-        public string[,] playerOWinScreen()
-        { return OWinsScreen; }
-        public string[,] playerXWinScreen()
-        { return XWinsScreen; }
-        public string[,] itsADrawScreen()
-        { return ItsADrawScreen; }
-        public string[,] gameInstructions()
-        { return GameInstructions; }
 
     }
 }
