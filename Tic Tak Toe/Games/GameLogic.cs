@@ -13,7 +13,10 @@ namespace Tic_Tak_Toe.Game
 {
     internal class GameLogicClass
     {
-        
+        int[] GameLocation;
+
+        public GameLogicClass(int[] gameLocation)
+        { GameLocation = gameLocation; }
 
         public int[,] GridReff = new int[,]
         { { 56, 4 },{ 59, 4 },{ 62, 4 },
@@ -31,149 +34,151 @@ namespace Tic_Tak_Toe.Game
 
         public void RunSuperTT(PlayerClass PlayerOne, PlayerClass PlayerTwo)
         {
-            SuperTicTakToe.SuperTicTakToe SuperTT = new SuperTicTakToe.SuperTicTakToe(PlayerOne,PlayerTwo);
+            SuperTicTakToe.SuperTicTakToe SuperTT = new SuperTicTakToe.SuperTicTakToe(PlayerOne,PlayerTwo,GameLocation);
             SuperTT.Run();
         }
 
-        public int Game(PlayerClass PLayerOne, PlayerClass PLayerTwo, int[] GamePositionReff, bool LoopGame)
-        {
-            PlayerClass CurrentPlayer = PLayerOne;
+        //public int Game(PlayerClass PLayerOne, PlayerClass PLayerTwo, int[] GamePositionReff, bool LoopGame)
+        //{
+        //    PlayerClass CurrentPlayer = PLayerOne;
 
-            PageClass Window = new PageClass();
-            GridClass Bored = new GridClass();
-            NavigationGame CurrentMove = new NavigationGame();
-            RenderClass Screen = new RenderClass(CurrentPlayer, gameBoredIndex, GamePositionReff);
-            int TurnCounter = 0;
-            CurrentPlayer.PlayerLocationIndex = 4;
+        //    PageClass Window = new PageClass();
+        //    GridClass Bored = new GridClass();
+        //    NavigationGame CurrentMove = new NavigationGame();
+        //    RenderClass Screen = new RenderClass();
+        //        //(CurrentPlayer, gameBoredIndex, GamePositionReff);
+        //    int TurnCounter = 0;
+        //    CurrentPlayer.PlayerLocationIndex = 4;
 
-            int Winner = GameLoop();
+        //    int Winner = GameLoop();
 
             
-            return Winner;
+        //    return Winner;
 
-            int GameLoop()
-            {
+        //    int GameLoop()
+        //    {
 
-                ResetGameChecker(GameChecker);
-                ResetGameBoredIndex(GameBoredIndex);
-                bool GameEvaluation = false;
-                while (GameEvaluation == false)
-                {
-                    Screen.RenderScreen();
-                    Screen.RenderPlayerScores(PLayerOne.PlayerScore, PLayerTwo.PlayerScore);
-                    Screen.RenderGameInstructions();
+        //        ResetGameChecker(GameChecker);
+        //        ResetGameBoredIndex(GameBoredIndex);
+        //        bool GameEvaluation = false;
+        //        while (GameEvaluation == false)
+        //        {
+        //            Screen.RenderScreen();
+        //            Screen.RenderPlayerScores(PLayerOne.PlayerScore, PLayerTwo.PlayerScore);
+        //            Screen.RenderGameInstructions();
 
-                    Screen.RenderPlayer(CurrentMove.GridReffBuilder(GridReff, CurrentPlayer.PlayerLocationIndex),
-                        CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex));
-                    GameEvaluation = RunPlayerTurn();
-                    CurrentPlayer = SwitchPlayer(CurrentPlayer ,PLayerOne,PLayerTwo);
+        //            Screen.RenderPlayer(CurrentMove.GridReffBuilder(GridReff, CurrentPlayer.PlayerLocationIndex),
+        //                CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex),CurrentPlayer);
+        //            GameEvaluation = RunPlayerTurn();
+        //            CurrentPlayer = SwitchPlayer(CurrentPlayer ,PLayerOne,PLayerTwo);
 
-                    if (TurnCounter == 8)
-                    { 
-                       // Check for winner
+        //            if (TurnCounter == 8)
+        //            { 
+        //               // Check for winner
                        
-                        GameIsADraw();
+        //                GameIsADraw();
 
-                        int Winner = 0;  return Winner; 
-                    }
+        //                int Winner = 0;  return Winner; 
+        //            }
 
-                    TurnCounter++;
+        //            TurnCounter++;
 
-                }
-                bool WinningPlayer = GetWinningPlayer(GameChecker);
-                ScoreTheWin(WinningPlayer);
+        //        }
+        //        bool WinningPlayer = GetWinningPlayer(GameChecker);
+        //        ScoreTheWin(WinningPlayer);
 
-                if (WinningPlayer == true)
-                { PlayerXWins(); int Winner = 1; return Winner; }
+        //        if (WinningPlayer == true)
+        //        { PlayerXWins(); int Winner = 1; return Winner; }
 
-                else
-                { PlayerOWins(); int Winner = -1; return Winner; }
+        //        else
+        //        { PlayerOWins(); int Winner = -1; return Winner; }
 
-            }
+        //    }
 
-            bool RunPlayerTurn()
-            {
-                bool IsMoveFreeToSet = false;
-                while (IsMoveFreeToSet == false)
-                {
-                    CurrentPlayer.PlayerLocationIndex = CurrentMove.MovePlayerLoop(CurrentPlayer, PLayerOne, PLayerTwo, GameBoredIndex, GridReff,
-                    GamePositionReff, LoopGame );
-                    IsMoveFreeToSet = CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex);
-                }
-                SetToBored(CurrentPlayer.PlayerIndex, CurrentPlayer.PlayerLocationIndex);
-                bool GameEvaluation = EvaluateGame(gameBoredIndex, gameChecker);
+        //    bool RunPlayerTurn()
+        //    {
+        //        bool IsMoveFreeToSet = false;
+        //        while (IsMoveFreeToSet == false)
+        //        {
+        //            CurrentPlayer.PlayerLocationIndex = CurrentMove.MovePlayerLoop(CurrentPlayer, PLayerOne, PLayerTwo, GameBoredIndex, GridReff,
+        //            GamePositionReff, LoopGame );
+        //            IsMoveFreeToSet = CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex);
+        //        }
+        //        SetToBored(CurrentPlayer.PlayerIndex, CurrentPlayer.PlayerLocationIndex);
+        //        bool GameEvaluation = EvaluateGame(gameBoredIndex, gameChecker);
 
-                return GameEvaluation;
+        //        return GameEvaluation;
 
-            }
+        //    }
 
-            void SetToBored(int PlayerIndex, int PlayerLocationIndex)
-            {
-                if (CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex))
-                { GameBoredIndex.SetValue(PlayerIndex, PlayerLocationIndex); }
+        //    void SetToBored(int PlayerIndex, int PlayerLocationIndex)
+        //    {
+        //        if (CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex))
+        //        { GameBoredIndex.SetValue(PlayerIndex, PlayerLocationIndex); }
 
-            }
-            void ScoreTheWin(bool WinningPlayer)
-            {
-                if (WinningPlayer == true) { PLayerOne.PlayerScore ++; }
-                else { PLayerTwo.PlayerScore++; }
+        //    }
+        //    void ScoreTheWin(bool WinningPlayer)
+        //    {
+        //        if (WinningPlayer == true) { PLayerOne.PlayerScore ++; }
+        //        else { PLayerTwo.PlayerScore++; }
 
-            }
-            ConsoleKey GetInput()
-            {
+        //    }
+        //    ConsoleKey GetInput()
+        //    {
 
-                ConsoleKey Input;
+        //        ConsoleKey Input;
 
-                do
-                {
-                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                    Input = keyInfo.Key;
-                } while (Console.KeyAvailable);
-                return Input;
-            }
-            void PlayerXWins()
-            {
-                Screen.RenderPlayerXWins(GamePositionReff);
-                Console.SetCursorPosition(54, 14);
-                Console.WriteLine("Player X Wins!");
-                ConsoleKey NextRound = GetInput();
-                while (NextRound != ConsoleKey.Enter) ;
+        //        do
+        //        {
+        //            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        //            Input = keyInfo.Key;
+        //        } while (Console.KeyAvailable);
+        //        return Input;
+        //    }
+        //    void PlayerXWins()
+        //    {
+        //        Screen.RenderPlayerXWins(GamePositionReff);
+        //        Console.SetCursorPosition(54, 14);
+        //        Console.WriteLine("Player X Wins!");
+        //        ConsoleKey NextRound = GetInput();
+        //        while (NextRound != ConsoleKey.Enter) ;
 
-                TurnCounter = 0;
-                if (LoopGame == true) { GameLoop(); }
-            }
-            void PlayerOWins()
-            {
-                Screen.RenderPlayerOWins(GamePositionReff);
-                Console.SetCursorPosition(54, 14);
-                Console.WriteLine("Player O Wins!");
-                ConsoleKey NextRound = GetInput();
-                while (NextRound != ConsoleKey.Enter) ;
+        //        TurnCounter = 0;
+        //        if (LoopGame == true) { GameLoop(); }
+        //    }
+        //    void PlayerOWins()
+        //    {
+        //        Screen.RenderPlayerOWins(GamePositionReff);
+        //        Console.SetCursorPosition(54, 14);
+        //        Console.WriteLine("Player O Wins!");
+        //        ConsoleKey NextRound = GetInput();
+        //        while (NextRound != ConsoleKey.Enter) ;
 
-                TurnCounter = 0;
-                if (LoopGame == true) { GameLoop(); }
-            }
-            void GameIsADraw()
-            {
-                Screen.RenderItsADraw(GamePositionReff);
-                Console.SetCursorPosition(54, 14);
-                Console.WriteLine("! Its A Draw !");
+        //        TurnCounter = 0;
+        //        if (LoopGame == true) { GameLoop(); }
+        //    }
+        //    void GameIsADraw()
+        //    {
+        //        Screen.RenderItsADraw(GamePositionReff);
+        //        Console.SetCursorPosition(54, 14);
+        //        Console.WriteLine("! Its A Draw !");
 
-                ConsoleKey ReplayRound = GetInput();
-                while (ReplayRound != ConsoleKey.Enter) ;
+        //        ConsoleKey ReplayRound = GetInput();
+        //        while (ReplayRound != ConsoleKey.Enter) ;
 
-                TurnCounter = 0;
-                if (LoopGame == true) { GameLoop(); }
-            }
-        }
+        //        TurnCounter = 0;
+        //        if (LoopGame == true) { GameLoop(); }
+        //    }
+        //}
         public int GameNoPage(PlayerClass PLayerOne, PlayerClass PLayerTwo, int[] GamePositionReff, bool LoopGame)
         {
             PlayerClass CurrentPlayer = PLayerOne;
 
-            PageClass Window = new PageClass();
-            GridClass Bored = new GridClass();
-            NavigationGame CurrentMove = new NavigationGame();
-            RenderClass Screen = new RenderClass(CurrentPlayer, gameBoredIndex, GamePositionReff);
+            PageClass Window = new PageClass(GameLocation);
+            GridClass Bored = new GridClass(GameLocation);
+            NavigationGame CurrentMove = new NavigationGame(GameLocation);
+            RenderClass Screen = new RenderClass(GameLocation);
+                //(CurrentPlayer, gameBoredIndex, GamePositionReff);
             int TurnCounter = 0;
             CurrentPlayer.PlayerLocationIndex = 4;
 
@@ -186,14 +191,14 @@ namespace Tic_Tak_Toe.Game
             {
 
                 ResetGameChecker(GameChecker);
-                ResetGameBoredIndex(GameBoredIndex);
+                ResetGameBored(GameBoredIndex);
                 bool GameEvaluation = false;
                 while (GameEvaluation == false)
                 {
-                    Screen.RenderGameBored();
+                    Screen.RenderGameBored(GamePositionReff,GameBoredIndex);
 
                     Screen.RenderPlayer(CurrentMove.GridReffBuilder(GridReff, CurrentPlayer.PlayerLocationIndex),
-                        CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex));
+                        CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, GameBoredIndex),CurrentPlayer);
                     GameEvaluation = RunPlayerTurn();
                     CurrentPlayer = SwitchPlayer(CurrentPlayer, PLayerOne, PLayerTwo);
 
@@ -320,7 +325,7 @@ namespace Tic_Tak_Toe.Game
             bool GameEvaluation = CheckWinChecker(gameChecker);
             return GameEvaluation;
         }
-        public void SetWinChecker(int[] gameBoredIndex, int[] gameChecker)
+        public int[] SetWinChecker(int[] gameBoredIndex, int[] gameChecker)
         {
             int[] GameBoredIndex = gameBoredIndex;
             int[] GameChecker = gameChecker;
@@ -333,6 +338,8 @@ namespace Tic_Tak_Toe.Game
             GameChecker.SetValue(GameBoredIndex[2] + GameBoredIndex[5] + GameBoredIndex[8], 5);
             GameChecker.SetValue(GameBoredIndex[0] + GameBoredIndex[4] + GameBoredIndex[8], 6);
             GameChecker.SetValue(GameBoredIndex[6] + GameBoredIndex[4] + GameBoredIndex[2], 7);
+
+            return GameChecker;
 
         }
         public bool CheckWinChecker(int[] gameChecker)
@@ -359,23 +366,23 @@ namespace Tic_Tak_Toe.Game
             }
             return ArrayReff.Empty;
         }
-        void ResetGameBoredIndex(int[] gameBoredIndex)
+        public int[] ResetGameBored(int[] GameBored)
         {
-            int[] GameBoredIndex = gameBoredIndex;
 
-            GameBoredIndex.SetValue(0, 0);
-            GameBoredIndex.SetValue(0, 1);
-            GameBoredIndex.SetValue(0, 2);
-            GameBoredIndex.SetValue(0, 3);
-            GameBoredIndex.SetValue(0, 4);
-            GameBoredIndex.SetValue(0, 5);
-            GameBoredIndex.SetValue(0, 6);
-            GameBoredIndex.SetValue(0, 7);
-            GameBoredIndex.SetValue(0, 8);
+            GameBored.SetValue(0, 0);
+            GameBored.SetValue(0, 1);
+            GameBored.SetValue(0, 2);
+            GameBored.SetValue(0, 3);
+            GameBored.SetValue(0, 4);
+            GameBored.SetValue(0, 5);
+            GameBored.SetValue(0, 6);
+            GameBored.SetValue(0, 7);
+            GameBored.SetValue(0, 8);
+
+            return GameBored;
         }
-        void ResetGameChecker(int[] gameChecker)
+        public int[] ResetGameChecker(int[] GameChecker)
         {
-            int[] GameChecker = gameChecker;
 
             GameChecker.SetValue(0, 0);
             GameChecker.SetValue(0, 1);
@@ -386,11 +393,70 @@ namespace Tic_Tak_Toe.Game
             GameChecker.SetValue(0, 6);
             GameChecker.SetValue(0, 7);
 
+            return GameChecker;
+
         }
-        public bool CheckMoveIsFreeToSet(int CurrentPlayerLocationIndex, int[] gameBordIndex)
+        
+        public bool CheckMoveIsFreeToSet(int CurrentPlayerLocationIndex, int[] gameBoredIndex)
         {
             if (gameBoredIndex[CurrentPlayerLocationIndex] == 0) { return true; }
             else { return false; }
+        }
+        public int[] SetToBored(int PlayerIndex, int PlayerLocationIndex, int[] gameBoredIndex)
+        {
+
+            gameBoredIndex.SetValue(PlayerIndex, PlayerLocationIndex);
+            return gameBoredIndex;
+
+        }
+        public void DisplayGameResult(int[] GameChecker, int[] GamePositionReff)
+        {
+
+            bool PlayerOneWins = GameChecker.Contains(3);
+            bool PLayerTwoWins = GameChecker.Contains(-3);
+
+            if (PlayerOneWins) { PlayerXWins(GamePositionReff); }
+            else if (PLayerTwoWins) { PlayerOWins(GamePositionReff); }
+            else { GameIsADraw(GamePositionReff); }
+
+        }
+        public void PlayerXWins(int[] gamePositionReff)
+        {
+            int[] NewGameReff = new int[2] { gamePositionReff[0] - 1, gamePositionReff[1] };
+
+            Builders.RenderClass Screen = new RenderClass(GameLocation);
+
+            Screen.RenderPlayerXWins(NewGameReff);
+            Console.SetCursorPosition(NewGameReff[0]+-1, NewGameReff[1]+ 10);
+            Console.WriteLine("Player X Wins!");
+        }
+        public void PlayerOWins(int[] gamePositionReff)
+        {
+            int[] NewGameReff = new int[2] { gamePositionReff[0] - 1, gamePositionReff[1] };
+
+            Builders.RenderClass Screen = new RenderClass(GameLocation);
+
+            Screen.RenderPlayerOWins(NewGameReff);
+            Console.SetCursorPosition(NewGameReff[0] + -1, NewGameReff[1] + 10);
+            Console.WriteLine("Player O Wins!");
+        }
+        public void GameIsADraw(int[] gamePositionReff)
+        {
+            int[] NewGameReff = new int[2] { gamePositionReff[0] - 1, gamePositionReff[1] };
+
+            Builders.RenderClass Screen = new RenderClass(GameLocation);
+
+            Screen.RenderItsADraw(NewGameReff);
+            Console.SetCursorPosition(NewGameReff[0] + -1, NewGameReff[1] + 10);
+            Console.WriteLine("! Its A Draw !");
+        }
+        public void ExtraInputChecks(ConsoleKey Input)
+        {
+            switch(Input)
+            {
+                case ConsoleKey.Escape: { }break;
+
+            }
         }
 
     }

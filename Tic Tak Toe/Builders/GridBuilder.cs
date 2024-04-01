@@ -10,13 +10,25 @@ using Tic_Tak_Toe.Resources;
 namespace Tic_Tak_Toe.Builders
 {
     internal class GridClass
-
     {
-        Array Builder = new Array();
-        GameLogicClass TileSelector = new GameLogicClass();
+
+        int[] GameLocation;
+
+        Array Builder;
+        GameLogicClass TileSelector;
+
+        public GridClass(int[] gameLocation)
+        {
+            GameLocation = gameLocation;
+
+            Builder = new Array();
+           
+            TileSelector = new GameLogicClass(GameLocation);
+
+        }
 
         public void TileBuilder(int TileDisplamentX, int TileDisplamentY, int TileIndex)
-        { Builder.DrawBoredTile(TileIndex ,0 + TileDisplamentX, 0 + TileDisplamentY); }
+        { Builder.DrawBoredTile(TileIndex ,0 + TileDisplamentX, 0 + TileDisplamentY, GameLocation); }
 
         public void GridBuilderLoop(int GridDisplasmentX, int GridDisplasmentY, int[] GameBoredIndex)
         {

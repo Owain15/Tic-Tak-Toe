@@ -12,36 +12,40 @@ namespace Tic_Tak_Toe.Game
 {
     internal class NavigationGame
     {
+        int[] GameLocation;
+        public NavigationGame(int[] gameLocation) { GameLocation = gameLocation; }
+
         public int GetNextPlayerLocationIndex(int PlayerLocationIndex, ConsoleKey Move)
         {
-            ConsoleKey Direction = Move;
             int NextPlayerLocationIndex = PlayerLocationIndex;
 
-            switch (Direction)
+            switch (Move)
             {
                 case ConsoleKey.UpArrow:
                     {
                         NextPlayerLocationIndex = PlayerLocationIndex - 3;
-                        return NextPlayerLocationIndex;
+                        break;
                     }
                 case ConsoleKey.DownArrow:
                     {
                         NextPlayerLocationIndex = PlayerLocationIndex + 3;
-                        return NextPlayerLocationIndex;
+                        break;
                     }
                 case ConsoleKey.LeftArrow:
                     {
                         NextPlayerLocationIndex = PlayerLocationIndex - 1;
-                        return NextPlayerLocationIndex;
+                        break;
                     }
                 case ConsoleKey.RightArrow:
                     {
                         NextPlayerLocationIndex = PlayerLocationIndex + 1;
-                        return NextPlayerLocationIndex;
+                        break;
                     }
 
 
             }
+            bool MoveInBounds = CheckMoveIsInBounds(NextPlayerLocationIndex);
+            if (MoveInBounds) { PlayerLocationIndex = NextPlayerLocationIndex; }
             return PlayerLocationIndex;
 
         }
@@ -74,22 +78,25 @@ namespace Tic_Tak_Toe.Game
                 PlayerTwo.PlayerScore = 0;
 
                 CurrentPlayer.PlayerLocationIndex = 4;
-                Tic_Tak_Toe.Game.GameLogicClass ResetCurrentGame = new Tic_Tak_Toe.Game.GameLogicClass();
-                ResetCurrentGame.Game(PlayerOne,PlayerTwo,GamePositionReff,GameLooped);
+                Tic_Tak_Toe.Game.GameLogicClass ResetCurrentGame = new Tic_Tak_Toe.Game.GameLogicClass(GameLocation);
+              //  ResetCurrentGame.Game(PlayerOne,PlayerTwo,GamePositionReff,GameLooped);
             }
         }
         private void PlayerEndGameCheck(ConsoleKey Move)
-        { if (Move == ConsoleKey.Escape) 
-            { Tic_Tak_Toe.HomePage.HomePage ResetProgram
-            = new Tic_Tak_Toe.HomePage.HomePage();
+        { 
+            if (Move == ConsoleKey.Escape) 
+            { 
+                Tic_Tak_Toe.HomePage.HomePage ResetProgram = new Tic_Tak_Toe.HomePage.HomePage(GameLocation);
                 Console.Clear();
                 ResetProgram.OpenHomePage();
-            } }
+            }
+        }
         public int MovePlayerLoop(PlayerClass CurrentPlayer, PlayerClass PlayerOne, PlayerClass PlayerTwo, int[] GameBordIndex, int[,] GridReff,
             int[] GamePositionReff, bool GameLooped )
         {
             int[] gameBordIndex = GameBordIndex;
-            RenderClass Refesh = new RenderClass(CurrentPlayer, gameBordIndex , GamePositionReff);
+            RenderClass Refesh = new RenderClass(GameLocation);
+                
 
             int CurrentPlayerLocationIndex = CurrentPlayer.PlayerLocationIndex;
             ConsoleKey Move = GetInput();
@@ -105,7 +112,7 @@ namespace Tic_Tak_Toe.Game
                 Refesh.RenderPlayerScores(PlayerOne.PlayerScore, PlayerTwo.PlayerScore);
                 Refesh.RenderGameInstructions();
                 Refesh.RenderPlayer(GridReffBuilder(GridReff, CurrentPlayerLocationIndex),
-                       CheckMoveIsFreeToSet(CurrentPlayerLocationIndex, gameBordIndex));
+                       CheckMoveIsFreeToSet(CurrentPlayerLocationIndex, gameBordIndex), CurrentPlayer);
 
                 Move = GetInput();
             }
@@ -128,6 +135,28 @@ namespace Tic_Tak_Toe.Game
             int gridReffY = GridReff[GridReffIndex, 1];
             int[] gridReff = new int[2] { gridReffX, gridReffY };
             return gridReff;
+        }
+        public int[] GetGridReff(int[] GridPositionReff, int PlayerLocationIndex)
+        {
+            int[] Result = new int[2];
+
+            switch(PlayerLocationIndex) 
+            {
+                    case 0: { Result[0] = 0; Result[1] = 0; }break;
+                    case 1: { Result[0] = 3; Result[1] = 0; } break;
+                    case 2: { Result[0] = 6; Result[1] = 0; } break;
+                    case 3: { Result[0] = 0; Result[1] = 3; } break;
+                    case 4: { Result[0] = 3; Result[1] = 3; } break;
+                    case 5: { Result[0] = 6; Result[1] = 3; } break;
+                    case 6: { Result[0] = 0; Result[1] = 6; } break;
+                    case 7: { Result[0] = 3; Result[1] = 6; } break;
+                    case 8: { Result[0] = 6; Result[1] = 6; } break;
+            }
+           
+            Result[0] = Result[0] + GridPositionReff[0];
+            Result[1] = Result[1] + GridPositionReff[1];
+            
+            return Result;
         }
     }
 }

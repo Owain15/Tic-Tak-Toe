@@ -11,8 +11,10 @@ namespace Tic_Tak_Toe.Builders
 {
     internal class PageClass
     {
-        TicTakToePage ArrayReff = new TicTakToePage();
+        TicTakToeSinglePage ArrayReff = new TicTakToeSinglePage();
         Array Builder = new Array();
+        int[] GameLocation;
+        public PageClass(int[] gameLocation) { GameLocation = gameLocation; }
 
         public void PageBuilder()
         {
@@ -28,23 +30,23 @@ namespace Tic_Tak_Toe.Builders
         }
 
         public void HeaderBuilder()
-        { Builder.DrawArray(ArrayReff.Header, 50, 0);}
-        public int GetHeaderRows()
+        { Builder.DrawArray(ArrayReff.Header, GameLocation[0]-1, GameLocation[1]-1);}
+        public int GetHeaderHight()
         {
            // Builder.ArrayBuilder(ArrayReff.Header);
             return Builder.GetRows(ArrayReff.Header);
         }
 
         public void BorderBuilder()
-        { Builder.DrawArray(ArrayReff.Border, 50, GetHeaderRows());}
-        public int GetBorderRows()
+        { Builder.DrawArray(ArrayReff.Border, GameLocation[0] - 1, GameLocation[1]-1+ GetHeaderHight());}
+        public int GetBorderHight()
         {
             //Builder.ArrayBuilder(ArrayReff.Border);
             return Builder.GetRows(ArrayReff.Border);
         }
 
         public void FooterBuilder()
-        { Builder.DrawArray(ArrayReff.Footer, 50, GetBorderRows() + GetHeaderRows()); }
+        { Builder.DrawArray(ArrayReff.Footer, GameLocation[0]-1,GameLocation[1]-1+ GetBorderHight() + GetHeaderHight()); }
 
     }
 }

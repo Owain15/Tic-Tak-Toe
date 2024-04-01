@@ -10,7 +10,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
     internal class SuperTicTakToeLogic
     {
        
-        TicTakToeGameClass CurrentGame;
+        SuperTicTakToeGameClass CurrentGame;
         PlayerClass CurrentPlayer;
        
         RenderClass Screen;
@@ -20,16 +20,20 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         int[] GameChecker;
         bool DisplayGameData;
 
-        public SuperTicTakToeLogic(PlayerClass currentPlayer,TicTakToeGameClass currentGame,bool displayGameData)
+        int[] GameLocation;
+
+        public SuperTicTakToeLogic(PlayerClass currentPlayer,SuperTicTakToeGameClass currentGame,bool displayGameData, int[] gameLocation)
         { 
             //PlayerOne = playerOne; 
             //PlayerTwo = playerTwo;
             CurrentPlayer = currentPlayer;
             CurrentGame = currentGame;
 
-            Screen = new RenderClass(CurrentPlayer, CurrentGame.GameBoredIndex,CurrentGame.GamePosition);
-            Logic = new GameLogicClass();
-            Move = new NavigationGame();
+            GameLocation = gameLocation;
+
+            Screen = new RenderClass(GameLocation);
+            Logic = new GameLogicClass(GameLocation);
+            Move = new NavigationGame(GameLocation);
 
             GameChecker = new int[9];
             DisplayGameData = displayGameData;
@@ -62,8 +66,8 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         public int? RunPlayerTurn()
         {
             CurrentGame.Render();
-            Screen.RenderPlayer(GetPlayerLoationReff(CurrentPlayer.PlayerLocationIndex, CurrentGame.GamePosition),
-                CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex,CurrentGame.GameBoredIndex));
+            Screen.RenderPlayer(GetPlayerLoationReff(CurrentPlayer.PlayerLocationIndex, CurrentGame.GameLocation),
+                CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex,CurrentGame.GameBoredIndex),CurrentPlayer);
             bool IsMoveFreeToSet = false;
            
             DisplayGameDataCheck();
@@ -81,8 +85,8 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
                     CurrentPlayer.PlayerLocationIndex = Move.isMoveInBounds(NextPlayerLocationIndex, CurrentPlayerLocationIndex);
 
                     CurrentGame.Render();
-                    Screen.RenderPlayer(GetPlayerLoationReff(CurrentPlayer.PlayerLocationIndex, CurrentGame.GamePosition),
-                 CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, CurrentGame.GameBoredIndex));
+                    Screen.RenderPlayer(GetPlayerLoationReff(CurrentPlayer.PlayerLocationIndex, CurrentGame.GameLocation),
+                 CheckMoveIsFreeToSet(CurrentPlayer.PlayerLocationIndex, CurrentGame.GameBoredIndex),CurrentPlayer);
                    
                     DisplayGameDataCheck();
                     Input = Move.GetInput();
@@ -139,7 +143,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
                     {
                         Console.Clear();
 
-                        Tic_Tak_Toe.HomePage.HomePage Start = new Tic_Tak_Toe.HomePage.HomePage();
+                        Tic_Tak_Toe.HomePage.HomePage Start = new Tic_Tak_Toe.HomePage.HomePage(GameLocation);
                         Start.OpenHomePage();
                     } break;
                 //case ConsoleKey.I: { DisplayGameData == true; }break;

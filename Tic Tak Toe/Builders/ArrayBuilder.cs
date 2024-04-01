@@ -43,11 +43,11 @@ namespace Tic_Tak_Toe.Builders
             }
 
         }
-        public void DrawBoredTile(int LocationIndex, int StartX, int StartY)
+        public void DrawBoredTile(int PlayerIndex,int StartX, int StartY, int[] GameLocation)
         {
-            GameLogicClass logicClass = new GameLogicClass();
+            GameLogicClass logicClass = new GameLogicClass(GameLocation);
 
-            string[,] Array = logicClass.GetTile(LocationIndex);
+            string[,] Array = logicClass.GetTile(PlayerIndex);
             ArrayBuilder(Array);
 
             int LoopCount = 0;
@@ -65,8 +65,8 @@ namespace Tic_Tak_Toe.Builders
                     if (LoopCount == 4)
                     {
                         Console.SetCursorPosition(x + StartX, y + StartY);
-                        if (LocationIndex == 1) { Console.ForegroundColor = ConsoleColor.DarkBlue; }
-                        else { Console.ForegroundColor = ConsoleColor.DarkCyan; }
+                        if (PlayerIndex == 1) { Console.ForegroundColor = ConsoleColor.DarkBlue; }
+                        else if (PlayerIndex == -1) { Console.ForegroundColor = ConsoleColor.DarkCyan; }
                         Console.WriteLine(Pixel);
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                     }

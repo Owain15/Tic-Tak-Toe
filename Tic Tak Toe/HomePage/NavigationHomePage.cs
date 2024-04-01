@@ -22,12 +22,13 @@ namespace Tic_Tak_Toe.HomePage
                 case (ConsoleKey.RightArrow):{ PlayersIndex += 1; break; }
             }
 
-            GameIndex = LoopField(GameIndex);
-            PlayersIndex = LoopField(PlayersIndex);
+            //GameIndex = LoopField(GameIndex);
+            //PlayersIndex = LoopField(PlayersIndex);
 
 
             PageReff[0] = GameIndex;
             PageReff[1] = PlayersIndex;
+            
             return PageReff;
         }
 
@@ -41,11 +42,11 @@ namespace Tic_Tak_Toe.HomePage
             } while (Console.KeyAvailable);
             return Input;
         }
-        private int LoopField(int Field)
-        {
-            if (Field > 1) { Field = 0; }
-            if (Field < 0) { Field = 1; }
-            return Field;
-        }
+        //private int LoopField(int Field)
+        //{
+        //    if (Field > 1) { Field = 0; }
+        //    if (Field < 0) { Field = 1; }
+        //    return Field;
+        //}
     }
 }

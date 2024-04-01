@@ -25,10 +25,10 @@ namespace Tic_Tak_Toe.Game
             PlyerType = playerType;
         }
 
-        public void Draw(int[] PlayerLocationReff)
+        public void Draw(int[] PlayerLocationReff, int[] GameLocation)
         {
 
-            GameLogicClass TileRef = new GameLogicClass();
+            GameLogicClass TileRef = new GameLogicClass(GameLocation);
             string[,] CurrentArray = TileRef.GetTile(PlayerIndex);
             int Rows = CurrentArray.GetLength(0);
             int Columns = CurrentArray.GetLength(1);
@@ -54,10 +54,10 @@ namespace Tic_Tak_Toe.Game
 
             }
         }
-            public void DrawError(int[] PlayerLocationReff)
+            public void DrawError(int[] PlayerLocationReff, int[] GameLocation)
         {
            
-            GameLogicClass TileRef = new GameLogicClass();
+            GameLogicClass TileRef = new GameLogicClass(GameLocation);
             string[,] CurrentArray = TileRef.GetTile(PlayerIndex);
             int Rows = CurrentArray.GetLength(0);
             int Columns = CurrentArray.GetLength(1);

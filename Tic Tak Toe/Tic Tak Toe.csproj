@@ -6,6 +6,11 @@
     <RootNamespace>Tic_Tak_Toe</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>Resources\blue-tic-tac-toe-icon-design-cool-mini-game-vector-27784452.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\blue-tic-tac-toe-icon-design-cool-mini-game-vector-27784452.ico" />
+  </ItemGroup>
 
 </Project>

@@ -16,13 +16,13 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         PlayerClass PlayerTwo;
 
         PlayerClass CurrentPlayer;
-        TicTakToeGameClass CurrentGame;
+        SuperTicTakToeGameClass CurrentGame;
         SuperTicTakToeLogic logic;
         Tic_Tak_Toe.Builders.Array Build;
         Tic_Tak_Toe.Resources.SuperTripleTPage Array;
         GameLogicClass DataHandler;
 
-        TicTakToeGameClass[] GameBoredArrays;
+        SuperTicTakToeGameClass[] GameBoredArrays;
         int[,] GameReffs;
 
         int GameInPlay;
@@ -31,24 +31,26 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
 
         public bool DisplayGameData;
 
-        TicTakToeGameClass GameZero;
-        TicTakToeGameClass GameOne;
-        TicTakToeGameClass GameTwo;
-        TicTakToeGameClass GameThree;
-        TicTakToeGameClass GameFour;
-        TicTakToeGameClass GameFive;
-        TicTakToeGameClass GameSix;
-        TicTakToeGameClass GameSeven;
-        TicTakToeGameClass GameEight;
+        SuperTicTakToeGameClass GameZero;
+        SuperTicTakToeGameClass GameOne;
+        SuperTicTakToeGameClass GameTwo;
+        SuperTicTakToeGameClass GameThree;
+        SuperTicTakToeGameClass GameFour;
+        SuperTicTakToeGameClass GameFive;
+        SuperTicTakToeGameClass GameSix;
+        SuperTicTakToeGameClass GameSeven;
+        SuperTicTakToeGameClass GameEight;
 
+        int[] GameLocation;
       
         
-        public SuperTicTakToe(PlayerClass playerOne, PlayerClass playerTwo)
+        public SuperTicTakToe(PlayerClass playerOne, PlayerClass playerTwo, int[] gameLocation)
         {
             PlayerOne = playerOne;
             PlayerTwo = playerTwo;
             CurrentPlayer = PlayerOne;
             GameInPlay = 4;
+            GameLocation = gameLocation;
             GameReffs = new int[9, 2]
   {
                 {49,2 },{60,2 },{71,2 },
@@ -56,23 +58,23 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
                 {49,22},{60,22},{71,22}
   };
 
-            GameZero = new TicTakToeGameClass(0, ArrayBuilderInt(GameReffs, 0), CurrentPlayer);
-            GameOne = new TicTakToeGameClass(1, ArrayBuilderInt(GameReffs, 1), CurrentPlayer);
-            GameTwo = new TicTakToeGameClass(2, ArrayBuilderInt(GameReffs, 2), CurrentPlayer);
-            GameThree = new TicTakToeGameClass(3, ArrayBuilderInt(GameReffs, 3), CurrentPlayer);
-            GameFour = new TicTakToeGameClass(4, ArrayBuilderInt(GameReffs, 4), CurrentPlayer);
-            GameFive = new TicTakToeGameClass(5, ArrayBuilderInt(GameReffs, 5), CurrentPlayer);
-            GameSix = new TicTakToeGameClass(6, ArrayBuilderInt(GameReffs, 6), CurrentPlayer);
-            GameSeven = new TicTakToeGameClass(7, ArrayBuilderInt(GameReffs, 7), CurrentPlayer);
-            GameEight = new TicTakToeGameClass(8, ArrayBuilderInt(GameReffs, 8), CurrentPlayer);
+            GameZero = new SuperTicTakToeGameClass(0, ArrayBuilderInt(GameReffs, 0), CurrentPlayer);
+            GameOne = new SuperTicTakToeGameClass(1, ArrayBuilderInt(GameReffs, 1), CurrentPlayer);
+            GameTwo = new SuperTicTakToeGameClass(2, ArrayBuilderInt(GameReffs, 2), CurrentPlayer);
+            GameThree = new SuperTicTakToeGameClass(3, ArrayBuilderInt(GameReffs, 3), CurrentPlayer);
+            GameFour = new SuperTicTakToeGameClass(4, ArrayBuilderInt(GameReffs, 4), CurrentPlayer);
+            GameFive = new SuperTicTakToeGameClass(5, ArrayBuilderInt(GameReffs, 5), CurrentPlayer);
+            GameSix = new SuperTicTakToeGameClass(6, ArrayBuilderInt(GameReffs, 6), CurrentPlayer);
+            GameSeven = new SuperTicTakToeGameClass(7, ArrayBuilderInt(GameReffs, 7), CurrentPlayer);
+            GameEight = new SuperTicTakToeGameClass(8, ArrayBuilderInt(GameReffs, 8), CurrentPlayer);
 
 
-            GameBoredArrays = new TicTakToeGameClass[9]
+            GameBoredArrays = new SuperTicTakToeGameClass[9]
             {   GameZero , GameOne , GameTwo ,
                GameThree ,  GameFour ,GameFive,
               GameSix , GameSeven , GameEight
             };
-            DataHandler = new GameLogicClass();
+            DataHandler = new GameLogicClass(GameLocation);
 
             MasterGameBored = new int?[9] { null, null, null, null, null, null, null, null, null };
             MasterGameChecker = new int?[9]; 
@@ -80,7 +82,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             DisplayGameData = false;
 
             CurrentGame = GameFour;
-            logic = new SuperTicTakToeLogic(CurrentPlayer, CurrentGame, DisplayGameData);
+            logic = new SuperTicTakToeLogic(CurrentPlayer, CurrentGame, DisplayGameData, GameLocation);
             Build = new Builders.Array();
             Array = new Resources.SuperTripleTPage();
         }
@@ -122,7 +124,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             Console.Read();
             Console.Clear();
 
-            Tic_Tak_Toe.HomePage.HomePage Start = new Tic_Tak_Toe.HomePage.HomePage();
+            Tic_Tak_Toe.HomePage.HomePage Start = new Tic_Tak_Toe.HomePage.HomePage(GameLocation);
             Start.OpenHomePage();
 
         }
@@ -153,9 +155,9 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             GameEight.Render();
 
         }
-        private TicTakToeGameClass GetGame(int GameInPlay)
+        private SuperTicTakToeGameClass GetGame(int GameInPlay)
         {
-            TicTakToeGameClass ChossenGame = GameFour;
+            SuperTicTakToeGameClass ChossenGame = GameFour;
             switch (GameInPlay)
             { case 0: { ChossenGame = GameZero; } break;
                 case 1: { ChossenGame = GameOne; } break;
@@ -203,9 +205,9 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         
             ChangePlayer();
             
-            logic = new SuperTicTakToeLogic(CurrentPlayer, CurrentGame, DisplayGameData);   
+            logic = new SuperTicTakToeLogic(CurrentPlayer, CurrentGame, DisplayGameData, GameLocation);   
         }
-        private bool CheckGameIsInPlay(TicTakToeGameClass ChosenGame)
+        private bool CheckGameIsInPlay(SuperTicTakToeGameClass ChosenGame)
         {
             bool IsGameInPlay = ChosenGame.GameInPlay;
             return IsGameInPlay;
@@ -215,7 +217,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         {
             MasterGameBored.SetValue(CurrentGame.GameResult, CurrentGame.GameID);
         }
-        private void TestDataGame(TicTakToeGameClass Game, int CurserLine)
+        private void TestDataGame(SuperTicTakToeGameClass Game, int CurserLine)
         {
 
             Console.SetCursorPosition(0, CurserLine);
@@ -269,7 +271,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         }
         private string[,] GetEndScreenCenter(int MasterEvaluation)
         {
-            Resources.TicTakToePage CenterArray = new Resources.TicTakToePage();
+            Resources.TicTakToeSinglePage CenterArray = new Resources.TicTakToeSinglePage();
             
             string[,] GameResult = CenterArray.ItsADrawScreen ;
             switch (MasterEvaluation)

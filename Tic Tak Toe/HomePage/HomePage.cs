@@ -11,13 +11,14 @@ namespace Tic_Tak_Toe.HomePage
 {
     internal class HomePage
     {
-        Tic_Tak_Toe.Resources.HomePage HomePageReff = new Tic_Tak_Toe.Resources.HomePage();
-        Tic_Tak_Toe.Builders.Array Builder = new Tic_Tak_Toe.Builders.Array();
-        NavigationHomePage UserInput = new NavigationHomePage();
-        HomePageLogic StartGame = new HomePageLogic();
+        HomePageLogic StartGame;
+        Tic_Tak_Toe.Resources.HomePage HomePageReff;
+        Tic_Tak_Toe.Builders.Array Builder;
+        NavigationHomePage UserInput;
+       
 
-        GameChoice[] GameReff = new GameChoice[2];
-        PlayersChoice[] PlayersReff = new PlayersChoice[2];
+        GameChoice[] GameReff = new GameChoice[3];
+        PlayersChoice[] PlayersReff = new PlayersChoice[3];
         
         
         private int GameIndex = 0;
@@ -25,21 +26,46 @@ namespace Tic_Tak_Toe.HomePage
 
         public int[] PageIndex = new int[2];
 
-        public void OpenHomePage()
+        int[] GameLocation;
+
+        bool CloseApplication;
+
+        public HomePage(int[] gameLocation)
         {
+            GameLocation = gameLocation;
+          
+            StartGame = new HomePageLogic(GameLocation);
+            HomePageReff = new Tic_Tak_Toe.Resources.HomePage();
+            Builder = new Tic_Tak_Toe.Builders.Array();
+            UserInput = new NavigationHomePage();
 
-            GameReff[0] = new GameChoice(0, "+ Tic Tak Toe +", 51, 8);
-            GameReff[1] = new GameChoice(1, " + Super Triple T +", 49, 8);
-
-            PlayersReff[0] = new PlayersChoice(0, " P.V.P ", 55, 11);
-            PlayersReff[1] = new PlayersChoice(1, " P.V.C ", 55, 11);
-
-            RenderScreen();
-            int[] GameSelection = GameSelectionLoop(UserInput);
-            StartGame.RunHomePageLogic(GameSelection);
+            CloseApplication = false;
         }
 
-        private int[] GameSelectionLoop(NavigationHomePage UserInput)
+        public bool ApplicationLoop()
+        {
+
+            while(!CloseApplication) { OpenHomePage(); }
+
+            return CloseApplication;
+        }
+        public void OpenHomePage()
+        {
+            //51,1
+            GameReff[0] = new GameChoice(0, "+ Tic Tak Toe +", GameLocation[0], GameLocation[1]+7);
+            GameReff[1] = new GameChoice(1, "+ Super Triple T +", GameLocation[0]-1, GameLocation[1]+7);
+            GameReff[2] = new GameChoice(2,"+ Close Program +", GameLocation[0] - 1, GameLocation[1] + 7);
+
+            PlayersReff[0] = new PlayersChoice(0, " P.V.P ", GameLocation[0]+4, GameLocation[1]+10);
+            PlayersReff[1] = new PlayersChoice(1, " P.V.C ", GameLocation[0]+4, GameLocation[1]+10);
+            PlayersReff[2] = new PlayersChoice(2, " C.V.C ", GameLocation[0]+4, GameLocation[1]+10);
+
+            RenderScreen();
+            int[] GameSelection = GameSelectionLoop();
+            CloseApplication = StartGame.RunHomePageLogic(GameSelection);
+        }
+
+        private int[] GameSelectionLoop()
         {
             
             int[] PageReff = PageReffBuilder(GameIndex,PlayersIndex);
@@ -48,21 +74,26 @@ namespace Tic_Tak_Toe.HomePage
             while (Input != ConsoleKey.Enter)
             {
                 Input = UserInput.GetInput();
-                int[] NextPageReff = UserInput.NavagatePage(Input,PageReff);
+                int[] ReffData = new int[2]; 
+                ReffData = UserInput.NavagatePage(Input,PageReff);
 
                 
 
-                PageReff[0] = LoopArrayCheckInt(GameReff.Length, PageReff[0]);
-                PageReff[1] = LoopArrayCheckInt(PlayersReff.Length, PageReff[1]);
+                PageReff[0] = LoopArrayCheckInt(GameReff.Length, ReffData[0]);
+                PageReff[1] = LoopArrayCheckInt(PlayersReff.Length, ReffData[1]);
     
                 GameIndex = PageReff[0];
                 PlayersIndex = PageReff[1];
+               
+                ClearChoicesRended();
                 RenderGameChoice();
-                RenderPlayersChoice();
+                if (PageReff[0] != 2) { RenderPlayersChoice(); }
                 
               
             }
-            PageReff = PageReffBuilder(GameIndex, PlayersIndex);
+           
+            // PageReff = PageReffBuilder(GameIndex, PlayersIndex);
+           
             return PageReff;
         }
         
@@ -70,34 +101,47 @@ namespace Tic_Tak_Toe.HomePage
         { int[] PageReff = new int[2] {GameIndex,PlayersIndex};return PageReff; } 
         private int LoopArrayCheckInt(int ArrayLength, int ArrayReff)
         { 
-        if(ArrayReff< 0) { ArrayReff = ArrayLength -1; }
-        if(ArrayReff> ArrayLength) {  ArrayReff = 0;}
-        return ArrayReff;
+            if(ArrayReff< 0) { ArrayReff = ArrayLength -1; }
+            if(ArrayReff> ArrayLength-1) {  ArrayReff = 0;}
+            return ArrayReff;
         }
         private void RenderBorder()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Builder.DrawArray(HomePageReff.HomePageBorder, 40, 2);
+            Builder.DrawArray(HomePageReff.HomePageBorder, GameLocation[0] - 11, GameLocation[1]+1);
             Console.ResetColor();
         }
         private void RenderInstruction()
         { 
             Console.ForegroundColor= ConsoleColor.DarkGray;
-            Builder.DrawArray(HomePageReff.HomePageInstructions,40,18);
+            Builder.DrawArray(HomePageReff.HomePageInstructions, GameLocation[0]-11, GameLocation[1]+17);
             Console.ResetColor();
         }
         private void RenderGameChoice()
         {
             Console.ForegroundColor=( ConsoleColor.DarkGray );
+
             Console.SetCursorPosition(GameReff[GameIndex].WrightLineX, GameReff[GameIndex].WrightLineY);
             Console.WriteLine(GameReff[GameIndex].GameName);
+            
             Console.ResetColor();
+        }
+        private void ClearChoicesRended()
+        {
+            Console.SetCursorPosition(GameLocation[0]-2, GameLocation[1]+7);
+            Console.WriteLine("                    ");
+        
+            Console.SetCursorPosition(GameLocation[0] + 3, GameLocation[1] + 10);
+            Console.WriteLine("       ");
+        
         }
         private void RenderPlayersChoice() 
         {
             Console.ForegroundColor = (ConsoleColor.DarkGray);
+
             Console.SetCursorPosition(PlayersReff[PlayersIndex].WrightLineX, PlayersReff[PlayersIndex].WrightLineY);
             Console.WriteLine(PlayersReff[PlayersIndex].PlayersString);
+            
             Console.ResetColor();
         }
         private void RenderScreen()

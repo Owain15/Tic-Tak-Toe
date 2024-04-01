@@ -9,11 +9,12 @@ using Tic_Tak_Toe.Game;
 
 namespace Tic_Tak_Toe.Game.SuperTicTakToe
 {
-    internal class TicTakToeGameClass
+    internal class SuperTicTakToeGameClass
     {
+
         public int GameID;
         
-        public int[] GamePosition;
+        public int[] GameLocation;
         public int[] GameBoredIndex;
         public int? GameResult;
         public bool GameInPlay;
@@ -22,20 +23,20 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
         RenderClass Screen;
         
     
-        public TicTakToeGameClass(int gameID, int[] gamePosition, PlayerClass currentPlayer)
+        public SuperTicTakToeGameClass(int gameID, int[] gameLocation, PlayerClass currentPlayer)
         {
             GameID = gameID;
-            GamePosition = gamePosition;
+            GameLocation = gameLocation;
             CurrentPlayer = currentPlayer;
             GameResult = null;
             GameBoredIndex = new int[9] {0,0,0,0,0,0,0,0,0};
-            Screen = new RenderClass(currentPlayer, GameBoredIndex, GamePosition);
+            Screen = new RenderClass(GameLocation);
             GameInPlay = true;
            
         }   
         public void Render()
         {
-            Screen.RenderGameBored();
+            Screen.RenderGameBored(GameLocation,GameBoredIndex);
 
         }
         public void RenderResult() 
@@ -43,9 +44,9 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             if(GameResult != null)
             { switch(GameResult)
                 {
-                    case 3: { Screen.RenderPlayerXWins(GamePosition); } break;
-                    case-3: { Screen.RenderPlayerOWins(GamePosition); } break;
-                    case 0: { Screen.RenderItsADraw   (GamePosition); } break;
+                    case 3: { Screen.RenderPlayerXWins(GameLocation); } break;
+                    case-3: { Screen.RenderPlayerOWins(GameLocation); } break;
+                    case 0: { Screen.RenderItsADraw   (GameLocation); } break;
 
                 }
                 
