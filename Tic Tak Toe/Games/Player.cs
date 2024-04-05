@@ -12,7 +12,7 @@ namespace Tic_Tak_Toe.Game
     internal class PlayerClass
     {
         // true = Player Conteroled, Fales = Computer Conteroled Player
-        bool PlyerType;
+        public bool PlyerType;
         public int PlayerIndex;
         public int PlayerLocationIndex;
 

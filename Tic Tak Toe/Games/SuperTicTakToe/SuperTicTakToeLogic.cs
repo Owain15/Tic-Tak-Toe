@@ -76,10 +76,12 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             {
                 
                 ConsoleKey Input = Move.GetInput();
+                bool GameOver = false;
 
                 while (Input != ConsoleKey.Enter)
                 {
-                    AditinalInputChecks(Input);
+                    //AditinalInputChecks(Input);
+                   
                     int CurrentPlayerLocationIndex = CurrentPlayer.PlayerLocationIndex;
                     int NextPlayerLocationIndex = Move.GetNextPlayerLocationIndex(CurrentPlayer.PlayerLocationIndex, Input);
                     CurrentPlayer.PlayerLocationIndex = Move.isMoveInBounds(NextPlayerLocationIndex, CurrentPlayerLocationIndex);
@@ -98,6 +100,7 @@ namespace Tic_Tak_Toe.Game.SuperTicTakToe
             CurrentGame.Render();
             
             int? CurrentGameResult = EvaluateGame(CurrentGame.GameBoredIndex,GameChecker);
+
             return CurrentGameResult;
         }
        

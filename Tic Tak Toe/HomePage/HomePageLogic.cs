@@ -187,7 +187,10 @@ namespace Tic_Tak_Toe.HomePage
                 if (Input == ConsoleKey.LeftArrow) { ScoreLimit --; }
                 if (Input == ConsoleKey.RightArrow) { ScoreLimit ++; }
 
-                if(ScoreLimit < 2) { ScoreLimit = 2; }
+                if (Input == ConsoleKey.DownArrow) { ScoreLimit--; }
+                if (Input == ConsoleKey.UpArrow) { ScoreLimit++; }
+
+                if (ScoreLimit < 2) { ScoreLimit = 2; }
                 if(ScoreLimit > 5) { ScoreLimit = 5; }
 
             }

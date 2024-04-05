@@ -14,8 +14,8 @@ Console.SetWindowSize(Console.LargestWindowWidth,Console.LargestWindowHeight);
 int[] GameLocation = { 51, 1 };//Defult 51,1
 bool CloseApplication = false;
 
-//SingleGameTTT Test = new SingleGameTTT(GameLocation,true,5);
-//Test.Run();
+SingleGameTTT Test = new SingleGameTTT(GameLocation, true, 5);
+Test.Run();
 
 Tic_Tak_Toe.HomePage.HomePage Start = new Tic_Tak_Toe.HomePage.HomePage(GameLocation);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Tic_Tak_Toe.Builders;
@@ -14,6 +15,8 @@ namespace Tic_Tak_Toe.Games.TicTakToe
         Tic_Tak_Toe.Builders.RenderClass Render;
         GameLogicClass Logic;
         NavigationGame Move;
+        CCPLogic CPLogic;
+        
 
         PlayerClass PlayerOne;
         PlayerClass PlayerTwo;
@@ -45,7 +48,7 @@ namespace Tic_Tak_Toe.Games.TicTakToe
             
 
             PlayerOne = new PlayerClass( 1,true );
-            PlayerTwo = new PlayerClass( -1,true );
+            PlayerTwo = new PlayerClass( -1,false );
 
             
 
@@ -65,6 +68,7 @@ namespace Tic_Tak_Toe.Games.TicTakToe
             Logic = new GameLogicClass(GameLocation);
             Render = new RenderClass(GameLocation);
             Move = new NavigationGame(GameLocation);
+            CPLogic = new CCPLogic();
 
             GameBoredLocation = new int[2];
             GameBoredLocation[0] = GameLocation[0]+Page.GetHeaderHight()+1;
@@ -106,9 +110,18 @@ namespace Tic_Tak_Toe.Games.TicTakToe
 
                     HighlightPlayer(CurrentPlayer);
                     
-
-                    while (!MoveMade)
+                    if (CurrentPlayer.PlyerType == false)
                     {
+                        //Render.RenderGameBored(GameBoredLocation, GameBoredIndex);
+                        //Render.RenderPlayer(Move.GetGridReff(GameBoredLocation, PlayerLocationIndex),
+                        //    Logic.CheckMoveIsFreeToSet(PlayerLocationIndex, GameBoredIndex), CurrentPlayer);
+
+                        int CCPMoveIndex = CPLogic.GetSingleGame(CurrentPlayer.PlayerIndex, GameBoredIndex); 
+                    }
+                    else 
+                    { 
+                        while (!MoveMade)
+                        {
                         Render.RenderGameBored(GameBoredLocation, GameBoredIndex);
                         Render.RenderPlayer(Move.GetGridReff(GameBoredLocation, PlayerLocationIndex),
                             Logic.CheckMoveIsFreeToSet(PlayerLocationIndex, GameBoredIndex), CurrentPlayer);
@@ -126,8 +139,10 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                         else { PlayerLocationIndex = Move.GetNextPlayerLocationIndex(PlayerLocationIndex, Input); }
 
                     }
+                    
+                        MoveMade = false;
 
-                    MoveMade = false;
+                    }
 
                     GameChecker = Logic.SetWinChecker(GameBoredIndex, GameChecker);
                     GameOver = Logic.EvaluateGame(GameBoredIndex, GameChecker);
