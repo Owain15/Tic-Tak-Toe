@@ -48,21 +48,50 @@ namespace Tic_Tak_Toe.HomePage
                         switch (PlayersReff)
                         {
                             case (0):
-                                { 
-                                    bool GameLoop = RunGetGameLoopPage();
+                                {
+                                    PlayerOne.PlyerType = true;
+                                    PlayerTwo.PlyerType = true;
+
                                     int ScoreLimit = 1;
                                     
+                                    bool GameLoop = RunGetGameLoopPage();
+                                   
                                     if (GameLoop) { ScoreLimit = RunGetScoreLimitPage(); }
 
-                                    SingleGameTTT Game = new SingleGameTTT(GameLocation, GameLoop, ScoreLimit);
+                                    SingleGameTTT Game = new SingleGameTTT(GameLocation, GameLoop, ScoreLimit,PlayerOne,PlayerTwo);
                                     
                                     Game.Run();
-
-
-                                
                                 } break;
-                            case (1): { GameUnderConstruction(); } break;
-                            case (2): { GameUnderConstruction(); } break;
+                            case (1): 
+                                {
+                                    PlayerOne.PlyerType = true;
+                                    PlayerTwo.PlyerType = false;
+
+                                    int ScoreLimit = 1;
+
+                                    bool GameLoop = RunGetGameLoopPage();
+
+                                    if (GameLoop) { ScoreLimit = RunGetScoreLimitPage(); }
+
+                                    SingleGameTTT Game = new SingleGameTTT(GameLocation, GameLoop, ScoreLimit,PlayerOne,PlayerTwo);
+
+                                    Game.Run();
+                                } break;
+                            case (2): 
+                                {
+                                    PlayerOne.PlyerType = false;
+                                    PlayerTwo.PlyerType = false;
+
+                                    int ScoreLimit = 1;
+
+                                    bool GameLoop = RunGetGameLoopPage();
+
+                                    if (GameLoop) { ScoreLimit = RunGetScoreLimitPage(); }
+
+                                    SingleGameTTT Game = new SingleGameTTT(GameLocation, GameLoop, ScoreLimit, PlayerOne, PlayerTwo);
+
+                                    Game.Run();
+                                } break;
                         }
                     }
                     break;

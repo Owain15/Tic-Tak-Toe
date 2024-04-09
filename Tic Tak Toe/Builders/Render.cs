@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tic_Tak_Toe.Game;
 using Tic_Tak_Toe.Builders;
 using Tic_Tak_Toe.Resources;
+using System.Reflection;
 
 namespace Tic_Tak_Toe.Builders
 {
@@ -81,6 +82,47 @@ namespace Tic_Tak_Toe.Builders
             Builder.DrawArray(ArrayReff.GameInstructions, 0, 0);
             Console.ResetColor();
         }
+        public void CCPAnimation(int[] GameLocation, int[] GameBoredLocation,int[] GameBoredIndex, PlayerClass CurrentPlayer)
+        {
+            NavigationGame Move = new NavigationGame(GameLocation);
+            GameLogicClass Logic = new GameLogicClass(GameLocation);
+
+            int[] DisplayBoredIndex = new int[9];
+            for (int i = 0; i < 9; i++)
+            { DisplayBoredIndex[i] = CurrentPlayer.PlayerIndex; }
+            
+
+            int Delay = 100;
+
+            RenderGameBored(GameBoredLocation,DisplayBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation,GameBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation, DisplayBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation, GameBoredIndex);
+            Thread.Sleep(Delay*2);
+
+            for (int i = 0; i < 9; i++)
+            {
+                RenderPlayer(Move.GetGridReff(GameBoredLocation, i),
+                          Logic.CheckMoveIsFreeToSet(i, GameBoredIndex), CurrentPlayer);
+
+                Thread.Sleep(Delay);
+
+                RenderGameBored(GameBoredLocation, GameBoredIndex);
+            }
+
+            RenderGameBored(GameBoredLocation, DisplayBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation, GameBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation, DisplayBoredIndex);
+            Thread.Sleep(Delay);
+            RenderGameBored(GameBoredLocation, GameBoredIndex);
+            Thread.Sleep(Delay);
+        }
+      
 
 
 

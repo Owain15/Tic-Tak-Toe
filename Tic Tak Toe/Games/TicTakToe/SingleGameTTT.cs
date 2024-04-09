@@ -40,15 +40,15 @@ namespace Tic_Tak_Toe.Games.TicTakToe
         int[] GameBoredIndex;
         int[] GameChecker; 
 
-        public SingleGameTTT(int[] gameLocation, bool loopGame, int scoreLimit )
+        public SingleGameTTT(int[] gameLocation, bool loopGame, int scoreLimit,PlayerClass playerOne, PlayerClass playerTwo )
         {
           
             GameLocation = gameLocation;
 
             
 
-            PlayerOne = new PlayerClass( 1,true );
-            PlayerTwo = new PlayerClass( -1,false );
+            PlayerOne = playerOne;
+            PlayerTwo = playerTwo;
 
             
 
@@ -112,11 +112,29 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                     
                     if (CurrentPlayer.PlyerType == false)
                     {
-                        //Render.RenderGameBored(GameBoredLocation, GameBoredIndex);
-                        //Render.RenderPlayer(Move.GetGridReff(GameBoredLocation, PlayerLocationIndex),
-                        //    Logic.CheckMoveIsFreeToSet(PlayerLocationIndex, GameBoredIndex), CurrentPlayer);
+                        Render.CCPAnimation(GameLocation,GameBoredLocation,GameBoredIndex,CurrentPlayer);
 
-                        int CCPMoveIndex = CPLogic.GetSingleGame(CurrentPlayer.PlayerIndex, GameBoredIndex); 
+                        int CCPMoveIndex = CPLogic.GetSingleGameEacy(GameBoredIndex); 
+                        
+                        GameBoredIndex[CCPMoveIndex]=CurrentPlayer.PlayerIndex;
+                        // May Be Redundent
+                        Render.RenderGameBored(GameBoredLocation,GameBoredIndex);
+
+                        if (Console.KeyAvailable)
+                            {
+                              ConsoleKey InputCheck;
+                              ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                              InputCheck = keyInfo.Key;
+                            
+                                if (InputCheck == ConsoleKey.Escape)
+                                {
+                                    bool EndCurrentGame = ExitCurrentGame();
+                                    if (EndCurrentGame) { MoveMade = true; TurnCount = 10; ScoreLimit = 0; }
+                                    Render.RenderGameBored(GameBoredLocation, GameBoredIndex);
+                                }
+                        }
+
+                        Thread.Sleep(500);
                     }
                     else 
                     { 
@@ -136,7 +154,18 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                             }
 
                         }
-                        else { PlayerLocationIndex = Move.GetNextPlayerLocationIndex(PlayerLocationIndex, Input); }
+                        else 
+                            { 
+                                PlayerLocationIndex = Move.GetNextPlayerLocationIndex(PlayerLocationIndex, Input);
+
+                                if(Input == ConsoleKey.Escape) 
+                                {
+                                    bool EndCurrentGame = ExitCurrentGame();
+                                    if (EndCurrentGame) { MoveMade = true; TurnCount = 10; ScoreLimit = 0; } 
+                                    Render.RenderGameBored(GameBoredLocation, GameBoredIndex);
+                                }
+                                
+                            }
 
                     }
                     
@@ -151,7 +180,8 @@ namespace Tic_Tak_Toe.Games.TicTakToe
 
                     TurnCount++;
 
-                    if (TurnCount == 9) { GameOver = true; }
+                    if (TurnCount >= 9) { GameOver = true; }
+                    
                 }
 
                 Logic.DisplayGameResult(GameChecker, GameBoredLocation);
@@ -250,6 +280,62 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                 Console.WriteLine("Game Over");
 
             // Console.ResetColor();
+
+        }
+        private bool ExitCurrentGame()
+        {
+            ClearGameBored();
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+
+            Console.SetCursorPosition(GameBoredLocation[0]-4, GameBoredLocation[1]+3);
+            Console.WriteLine("Exit Current Game?");
+
+            
+
+            ConsoleKey Input = ConsoleKey.UpArrow;
+            bool QuitGame = false;
+
+            while(Input != ConsoleKey.Enter) 
+            {
+                if (QuitGame) { Console.ForegroundColor = ConsoleColor.Green; }
+                Console.SetCursorPosition(GameBoredLocation[0], GameBoredLocation[1] + 5);
+                Console.WriteLine("Yes");
+                if (QuitGame) { Console.ForegroundColor = ConsoleColor.DarkGray; }
+
+                Console.SetCursorPosition(GameBoredLocation[0] + 4, GameBoredLocation[1] + 5);
+                Console.WriteLine("Or");
+
+                if (!QuitGame) { Console.ForegroundColor = ConsoleColor.Green; }
+                Console.SetCursorPosition(GameBoredLocation[0] + 7 , GameBoredLocation[1] + 5);
+                Console.WriteLine("No");
+                if (!QuitGame) { Console.ForegroundColor = ConsoleColor.DarkGray; }
+
+                Input = Move.GetInput();
+                
+                if (Input == ConsoleKey.LeftArrow) { QuitGame = true; }
+                if (Input == ConsoleKey.RightArrow) { QuitGame = false; }
+            }
+
+            ClearGameBored();
+           
+            Console.ResetColor();
+
+
+            return QuitGame;
+        }
+        private void ClearGameBored()
+        {
+            string ClearLine = "                   ";
+
+            for (int i = GameBoredLocation[1]; i <= GameBoredLocation[1] + 8; i++)
+            {
+                Console.SetCursorPosition(GameBoredLocation[0] - 5, i);
+                Console.WriteLine(ClearLine);
+            }
+        }
+        private void PlayerEndGameCheck(ConsoleKey Input)
+        {
 
         }
     }

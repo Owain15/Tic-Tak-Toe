@@ -10,59 +10,68 @@ namespace Tic_Tak_Toe.Games
     internal class CCPLogic
     {
 
+        public int GetSingleGameEacy(int[] GameBoredIndex)
+        {
+            int ChosenMove = 4;
+
+            Random Chioce = new Random();
+
+            bool?[] GameBoredBool = ConvertGameBoredToNullBool(GameBoredIndex);
+
+            List<int> AvalabelMoves = GetAvalabelMoves(GameBoredBool);
+
+            ChosenMove = AvalabelMoves[Chioce.Next(0, AvalabelMoves.Count - 1)];
+
+            return ChosenMove;
+        }
 
         public int GetSingleGame(int Playerindex, int[] GameBoredIndex)
         {
-            int[] NullGameLocation = new int[0];
-            GameLogicClass Logic = new GameLogicClass(NullGameLocation);
-
-            int OptimalMove = 15;
-
-            bool CurrentPlayerBoolIndex;
-            bool OponentPlayerBoolIndex;
-
-            if (Playerindex == 1) { CurrentPlayerBoolIndex = true; }
-            else { CurrentPlayerBoolIndex = false; }
-
-            if (CurrentPlayerBoolIndex) { OponentPlayerBoolIndex = false; }
-            else { OponentPlayerBoolIndex = true; }
-
-            bool?[] BoolGameBord = ConvertGameBoredToNullBool(GameBoredIndex);
-
-            int MoveCountToGameOver;
-
-            bool MoveFound = false;
-            bool GameOver = false;
-
 
             List<int> OptionsPerMove = new List<int>();
 
-            for (int i = 0; i < GameBoredIndex.Length - 1; i++)
+            for (int i = 0; i < GameBoredIndex.Length; i++)
             {
-                GameBoredIndex[i] = Playerindex;
+                int[] TestMove = new int[9];
 
-                int Options = CheckForOptions(GameBoredIndex);
+                for(int Index = 0; Index < TestMove.Length-1; Index++)
+                { TestMove[Index] = GameBoredIndex[Index]; }
 
-                OptionsPerMove.Add(Options);
-            
 
-            //MoveCountToGameOver = 0;
+                if (TestMove[i] == 0)
+                {
+                    TestMove[i] = Playerindex;
+               
+                    // Remove TestMoves containg and opponents playerindex
+                    int Options = CheckForBestOptions(TestMove);
 
-            ////List<int> PosibleMoves = new List<int>();
-
-            //for (int i = 0; i < BoolGameBord.Length - 1; i++)
-            //{
-            //    BoolGameBord[i] = CurrentPlayerBoolIndex;
-            //    GameOver = EvaulateGameBool(BoolGameBord);
-
-            //}
-
+                    OptionsPerMove.Add(Options);
+                
+                }
 
 
             }
+            
+            int MostOptions = 0;
 
-            return OptimalMove;
+            for (int i = 0; i < OptionsPerMove.Count - 1; i++)
+            {
+                if (OptionsPerMove[i] > MostOptions) { MostOptions = OptionsPerMove[i]; }
+            }
+            
+            List<int> MoveIndexList = new List<int>();
+            
+            for(int i = 0;i <= OptionsPerMove.Count -1;i++)
+            { if (OptionsPerMove[i] >= MostOptions) { MoveIndexList.Add(i); } }
+
+          
+            Random RandomIndex = new Random();
+           
+            int ChosenMove = MoveIndexList[RandomIndex.Next(0,MoveIndexList.Count-1)];
+
+            return ChosenMove;
         }
+
 
 
         private bool?[] ConvertGameBoredToNullBool(int[] GameBoredIndex)
@@ -84,6 +93,7 @@ namespace Tic_Tak_Toe.Games
 
             return Convertion;
         }
+
         private bool EvaulateGameBool(bool?[] BoolGameBord)
         {
             bool GameOver = false;
@@ -103,22 +113,22 @@ namespace Tic_Tak_Toe.Games
 
         }
 
-        private int CheckForOptions(int[]GameBordIndex)
+        private int CheckForBestOptions(int[]TestBordIndex)
         {
             int BestValue = 0;
 
             int[] GameCheck = new int[8];
 
-            GameCheck[0] = GameBordIndex[0] + GameBordIndex[1] + GameBordIndex[2];
-            GameCheck[1] = GameBordIndex[3] + GameBordIndex[4] + GameBordIndex[5];
-            GameCheck[2] = GameBordIndex[6] + GameBordIndex[7] + GameBordIndex[8];
+            GameCheck[0] = TestBordIndex[0] + TestBordIndex[1] + TestBordIndex[2];
+            GameCheck[1] = TestBordIndex[3] + TestBordIndex[4] + TestBordIndex[5];
+            GameCheck[2] = TestBordIndex[6] + TestBordIndex[7] + TestBordIndex[8];
 
-            GameCheck[3] = GameBordIndex[0] + GameBordIndex[3] + GameBordIndex[6];
-            GameCheck[4] = GameBordIndex[1] + GameBordIndex[4] + GameBordIndex[7];
-            GameCheck[5] = GameBordIndex[2] + GameBordIndex[5] + GameBordIndex[8];
+            GameCheck[3] = TestBordIndex[0] + TestBordIndex[3] + TestBordIndex[6];
+            GameCheck[4] = TestBordIndex[1] + TestBordIndex[4] + TestBordIndex[7];
+            GameCheck[5] = TestBordIndex[2] + TestBordIndex[5] + TestBordIndex[8];
 
-            GameCheck[6] = GameBordIndex[0] + GameBordIndex[4] + GameBordIndex[8];
-            GameCheck[7] = GameBordIndex[6] + GameBordIndex[4] + GameBordIndex[2];
+            GameCheck[6] = TestBordIndex[0] + TestBordIndex[4] + TestBordIndex[8];
+            GameCheck[7] = TestBordIndex[6] + TestBordIndex[4] + TestBordIndex[2];
 
             for(int i = 0; i < GameCheck.Length-1;i++)
             {
@@ -135,6 +145,18 @@ namespace Tic_Tak_Toe.Games
             int AmountOfOptions = Result.Count;
 
             return AmountOfOptions;
+        }
+
+        private List<int> GetAvalabelMoves(bool?[] GameBoredBool)
+        {
+            List<int> AvalabelMoves = new List<int>();
+
+            for (int i = 0; i < GameBoredBool.Length; i++)
+            {
+                if (GameBoredBool[i] == null) { AvalabelMoves.Add(i); }
+            }
+
+            return AvalabelMoves;
         }
 
     }

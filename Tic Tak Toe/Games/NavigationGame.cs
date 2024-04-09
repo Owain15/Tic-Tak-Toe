@@ -136,7 +136,7 @@ namespace Tic_Tak_Toe.Game
             int[] gridReff = new int[2] { gridReffX, gridReffY };
             return gridReff;
         }
-        public int[] GetGridReff(int[] GridPositionReff, int PlayerLocationIndex)
+        public int[] GetGridReff(int[] GameBoredLocation, int PlayerLocationIndex)
         {
             int[] Result = new int[2];
 
@@ -153,8 +153,8 @@ namespace Tic_Tak_Toe.Game
                     case 8: { Result[0] = 6; Result[1] = 6; } break;
             }
            
-            Result[0] = Result[0] + GridPositionReff[0];
-            Result[1] = Result[1] + GridPositionReff[1];
+            Result[0] = Result[0] + GameBoredLocation[0];
+            Result[1] = Result[1] + GameBoredLocation[1];
             
             return Result;
         }
