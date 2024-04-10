@@ -112,9 +112,10 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                     
                     if (CurrentPlayer.PlyerType == false)
                     {
-                        Render.CCPAnimation(GameLocation,GameBoredLocation,GameBoredIndex,CurrentPlayer);
+                        //Render.CCPAnimation(GameLocation,GameBoredLocation,GameBoredIndex,CurrentPlayer);
 
-                        int CCPMoveIndex = CPLogic.GetSingleGameEacy(GameBoredIndex); 
+                        //int CCPMoveIndex = CPLogic.GetSingleGameIndexRandom(GameBoredIndex); 
+                        int CCPMoveIndex = CPLogic.GetSingleGameIndex(GameBoredIndex, CurrentPlayer.PlayerIndex);
                         
                         GameBoredIndex[CCPMoveIndex]=CurrentPlayer.PlayerIndex;
                         // May Be Redundent

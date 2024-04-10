@@ -10,7 +10,7 @@ namespace Tic_Tak_Toe.Games
     internal class CCPLogic
     {
 
-        public int GetSingleGameEacy(int[] GameBoredIndex)
+        public int GetSingleGameIndexRandom(int[] GameBoredIndex)
         {
             int ChosenMove = 4;
 
@@ -23,6 +23,221 @@ namespace Tic_Tak_Toe.Games
             ChosenMove = AvalabelMoves[Chioce.Next(0, AvalabelMoves.Count - 1)];
 
             return ChosenMove;
+        }
+        public int GetSingleGameIndex(int[] GameBoredIndex,int PlayerIndex) 
+        {
+            bool?[] GameBoredBool = ConvertGameBoredToNullBool(GameBoredIndex);
+            
+            bool CurrentPlayer = SetCurrentPlayer(PlayerIndex);
+            bool OpponentPlayer = SetOpponentPlayer(CurrentPlayer);
+
+            bool GameOver;
+
+            // loss = 11 draw = 10  win <=9 already been played >= 12
+            int[] MovesTillOptimalGameOver = new int[9] {11,11,11,11,11,11,11,11,11 };
+
+            int LowestMoveCount = 12;
+
+            for (int i = 0; i<8; i++)
+            {
+                GameOver = false;
+                int TestTurnCount = 0;
+                
+                if (GameBoredBool[i]==null)
+                {
+                    bool?[] Test1 = new bool?[9] ;
+                    int I=0;
+                    foreach (bool? Index in GameBoredBool)
+                    {
+                        Test1[I] = Index;
+                        I++;
+                    }
+                    Test1[i] = CurrentPlayer;
+
+                    TestTurnCount++;
+
+                    GameOver = EvaulateGameBool(Test1);
+
+                    if (GameOver) 
+                    {  if (TestTurnCount < LowestMoveCount) {LowestMoveCount = TestTurnCount;} }
+                    else
+                     {
+
+                        bool?[] Test2 = CoppyGameBoredBool(Test1);
+                        for(int a=0; a<8; a++)
+                        {
+                            TestTurnCount = 1;
+
+                            if (Test2[a]==null)
+                            {
+                                Test2[a] = OpponentPlayer;
+                                TestTurnCount++;
+
+                                GameOver = EvaulateGameBool(Test2);
+
+                            }
+                            else { TestTurnCount = 12; }
+                            if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                            if (GameOver) { break; }
+                            else 
+                            {
+                                bool?[] Test3 = CoppyGameBoredBool(Test2);
+                                for (int b = 0; b < 8; b++)
+                                {
+                                    TestTurnCount = 2;
+
+                                    if (Test3[b] == null)
+                                    {
+                                        Test3[b] = CurrentPlayer;
+                                        TestTurnCount++;
+
+                                        GameOver = EvaulateGameBool(Test3);
+
+                                    }
+                                    else { TestTurnCount = 12; }
+                                    if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                    if (GameOver) { break; }
+                                    else
+                                    {
+                                        bool?[] Test4 = CoppyGameBoredBool(Test3);
+                                        for (int c = 0; c < 8; c++)
+                                        {
+                                            TestTurnCount = 3;
+
+                                            if (Test4[c] == null)
+                                            {
+                                                Test4[c] = OpponentPlayer;
+                                                TestTurnCount++;
+
+                                                GameOver = EvaulateGameBool(Test4);
+
+                                            }
+                                            else { TestTurnCount = 12; }
+                                            if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                            if (GameOver) { break; }
+                                            else
+                                            {
+                                                bool?[] Test5 = CoppyGameBoredBool(Test4);
+                                                for (int d = 0; d < 8; d++)
+                                                {
+                                                    TestTurnCount = 4;
+
+                                                    if (Test5[d] == null)
+                                                    {
+                                                        Test3[b] = CurrentPlayer;
+                                                        TestTurnCount++;
+
+                                                        GameOver = EvaulateGameBool(Test5);
+
+                                                    }
+                                                    else { TestTurnCount = 12; }
+                                                    if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                                    if (GameOver) { break; }
+                                                    else
+                                                    {
+                                                        bool?[] Test6 = CoppyGameBoredBool(Test5);
+                                                        for (int e = 0; e < 8; e++)
+                                                        {
+                                                            TestTurnCount = 5;
+
+                                                            if (Test6[e] == null)
+                                                            {
+                                                                Test6[e] = OpponentPlayer;
+                                                                TestTurnCount++;
+
+                                                                GameOver = EvaulateGameBool(Test6);
+
+                                                            }
+                                                            else { TestTurnCount = 12; }
+                                                            if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                                            if (GameOver) { break; }
+                                                            else
+                                                            {
+                                                                bool?[] Test7 = CoppyGameBoredBool(Test6);
+                                                                for (int f = 0; f < 8; f++)
+                                                                {
+                                                                    TestTurnCount = 6;
+
+                                                                    if (Test7[f] == null)
+                                                                    {
+                                                                        Test7[f] = CurrentPlayer;
+                                                                        TestTurnCount++;
+
+                                                                        GameOver = EvaulateGameBool(Test7);
+
+                                                                    }
+                                                                    else { TestTurnCount = 12; }
+                                                                    if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                                                    if (GameOver) { break; }
+                                                                    else
+                                                                    {
+                                                                        bool?[] Test8 = CoppyGameBoredBool(Test7);
+                                                                        for (int g = 0; g < 8; g++)
+                                                                        {
+                                                                            TestTurnCount = 7;
+
+                                                                            if (Test8[g] == null)
+                                                                            {
+                                                                                Test8[g] = OpponentPlayer;
+                                                                                TestTurnCount++;
+
+                                                                                GameOver = EvaulateGameBool(Test8);
+
+                                                                            }
+                                                                            else { TestTurnCount = 12; }
+                                                                            if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                                                            if (GameOver) { break; }
+                                                                            else
+                                                                            {
+                                                                                bool?[] Test9 = CoppyGameBoredBool(Test8);
+                                                                                for (int h = 0; h < 8; h++)
+                                                                                {
+                                                                                    TestTurnCount = 8;
+
+                                                                                    if (Test9[h] == null)
+                                                                                    {
+                                                                                        Test9[h] = CurrentPlayer;
+                                                                                        TestTurnCount++;
+
+                                                                                        GameOver = EvaulateGameBool(Test9);
+
+                                                                                    }
+                                                                                    else { TestTurnCount = 12; }
+                                                                                    if (TestTurnCount >= LowestMoveCount) { GameOver = true; }
+                                                                                    if (GameOver) { break; }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                    }
+                    
+                }
+                else { TestTurnCount = 12; }
+                
+                //if (TestTurnCount > LowestMoveCount) { GameOver = true; }
+            
+                //if(GameOver)
+                //{
+                    MovesTillOptimalGameOver[i] = TestTurnCount;
+                //}
+            
+            }
+            //retern index for LestMoves to win
+            
+            // Game Over On OponentTurns = loss MakeTurnCount = 11. turn counter redundent on Oponent turns.
+            return LowestMoveCount;
         }
 
         public int GetSingleGame(int Playerindex, int[] GameBoredIndex)
@@ -158,6 +373,25 @@ namespace Tic_Tak_Toe.Games
 
             return AvalabelMoves;
         }
+        private bool SetCurrentPlayer(int PlayerIndex)
+        {
+            if (PlayerIndex == 1) { return true; }
+            else { return false; }
+        }
+        private bool SetOpponentPlayer(bool CurrentPlayer)
+        { 
+            if (CurrentPlayer == true) { return false; }
+            else { return true; }
+        }
+        private bool?[] CoppyGameBoredBool(bool?[] GameBoredBool)
+        {
+            bool?[] NewArray = new bool?[9];
 
+            for(int i = 0;i < 9;i++)
+            {
+                NewArray[i] = GameBoredBool[i];
+            }
+            return NewArray;
+        }
     }
 }
