@@ -15,7 +15,7 @@ namespace Tic_Tak_Toe.Games.TicTakToe
         Tic_Tak_Toe.Builders.RenderClass Render;
         GameLogicClass Logic;
         NavigationGame Move;
-        CCPLogic CPLogic;
+        CCPData CCP;
         
 
         PlayerClass PlayerOne;
@@ -68,7 +68,6 @@ namespace Tic_Tak_Toe.Games.TicTakToe
             Logic = new GameLogicClass(GameLocation);
             Render = new RenderClass(GameLocation);
             Move = new NavigationGame(GameLocation);
-            CPLogic = new CCPLogic();
 
             GameBoredLocation = new int[2];
             GameBoredLocation[0] = GameLocation[0]+Page.GetHeaderHight()+1;
@@ -112,11 +111,11 @@ namespace Tic_Tak_Toe.Games.TicTakToe
                     
                     if (CurrentPlayer.PlyerType == false)
                     {
-                        //Render.CCPAnimation(GameLocation,GameBoredLocation,GameBoredIndex,CurrentPlayer);
-
-                        //int CCPMoveIndex = CPLogic.GetSingleGameIndexRandom(GameBoredIndex); 
-                        int CCPMoveIndex = CPLogic.GetSingleGameIndex(GameBoredIndex, CurrentPlayer.PlayerIndex);
+                        Render.CCPAnimation(GameLocation,GameBoredLocation,GameBoredIndex,CurrentPlayer);
                         
+                        CCP = new CCPData(GameBoredIndex,CurrentPlayer);
+                        int CCPMoveIndex = CCP.NextMove;
+
                         GameBoredIndex[CCPMoveIndex]=CurrentPlayer.PlayerIndex;
                         // May Be Redundent
                         Render.RenderGameBored(GameBoredLocation,GameBoredIndex);
